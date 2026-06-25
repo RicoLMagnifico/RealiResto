@@ -416,7 +416,7 @@
                   {d.heroSubtext || ""}
                 </p>
                 <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-                  <button className="btn btn-primary" onClick={onCta}>Get in touch <Icon name="arrow-right" size={16}/></button>
+                  <button className="btn btn-primary" onClick={() => onCta("contact")}>Get in touch <Icon name="arrow-right" size={16}/></button>
                   <button className="btn btn-ghost" onClick={() => onCta("work")}>See the work</button>
                 </div>
               </div>
