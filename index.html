@@ -101,8 +101,6 @@
     .rr-grid-hero        { grid-template-columns: 1.15fr 1fr; align-items: center; gap: 56px; }
     .rr-grid-cta-dark    { grid-template-columns: 1.2fr 1fr;  align-items: center; gap: 56px; }
     .rr-grid-contact     { grid-template-columns: 1.2fr 1fr;  gap: 56px; }
-    .rr-grid-about       { grid-template-columns: 1fr 1fr;    align-items: center; gap: 56px; }
-    .rr-grid-about-prose { grid-template-columns: 1fr 1fr;    gap: 56px; }
     .rr-grid-footer      { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
     .rr-grid-service-row { display: grid; grid-template-columns: 100px 1fr 200px 160px 80px; align-items: center; }
 
@@ -198,7 +196,7 @@
     @media (max-width: 900px) {
       .section { padding: 72px 32px; }
       .section.tight { padding: 48px 32px; }
-      .rr-grid-hero, .rr-grid-cta-dark, .rr-grid-contact, .rr-grid-about, .rr-grid-about-prose { grid-template-columns: 1fr; gap: 36px; }
+      .rr-grid-hero, .rr-grid-cta-dark, .rr-grid-contact { grid-template-columns: 1fr; gap: 36px; }
       .rr-grid-3 { grid-template-columns: 1fr 1fr; gap: 20px; }
       .rr-grid-4 { grid-template-columns: 1fr 1fr; gap: 24px; }
       .rr-grid-footer { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -250,8 +248,6 @@
     ],
     heroSubtext:     "Now servicing and repairing ATV/UTV at affordable prices, will also consider other units as well.",
     footerTagline:   "You Wack 'Em, We Tack 'Em",
-    aboutHeadline:   "A garage that grew up.",
-    aboutParagraphs: ["Please reach out with any requests for repairs, service, or accessory installs! Happy to provide affordable prices while maintaining nothing short of quality work!", "", ""],
     responseTime:    "",
     stats: [],
     services: [],
@@ -308,7 +304,7 @@
     const Nav = ({ current, onNav }) => {
       const items = [
         { id: "home", label: "Home" }, { id: "work", label: "Work" },
-        { id: "services", label: "Services" }, { id: "about", label: "About" },
+        { id: "services", label: "Services" },
         { id: "contact", label: "Contact" },
       ];
       return (
@@ -347,7 +343,7 @@
             <div>
               <div className="eyebrow">Shop</div>
               <ul style={{ listStyle: "none", padding: 0, margin: "16px 0 0", display: "flex", flexDirection: "column", gap: 10 }}>
-                {["work", "services", "about", "contact"].map(id => (
+                {["work", "services", "contact"].map(id => (
                   <li key={id}><a href="#" onClick={(e) => { e.preventDefault(); onNav(id); }} style={{ color: "var(--rr-fg-1)", textDecoration: "none", textTransform: "capitalize", fontSize: 14 }}>{id}</a></li>
                 ))}
               </ul>
@@ -649,38 +645,6 @@
       );
     };
 
-    const AboutPage = () => {
-      const d = window.SITE_DATA;
-      return (
-        <>
-          <Section>
-            <div className="rr-grid rr-grid-about">
-              <div>
-                <div className="eyebrow">The Shop</div>
-                <h1 className="h-display h1" style={{ marginTop: 14 }}>Built by<br/><span className="orange">riders.</span></h1>
-              </div>
-              <div className="photo alt-4" data-label="THE CREW" style={{ aspectRatio: "4 / 5" }}></div>
-            </div>
-          </Section>
-          <Section tone="elevated" tight>
-            <div className="rr-grid rr-grid-about-prose">
-              <div><h2 className="h-display h2">{d.aboutHeadline}</h2></div>
-              <div style={{ fontSize: 17, lineHeight: 1.6, color: "var(--rr-fg-2)" }}>
-                {d.aboutParagraphs.filter(p => p).map((p, i) => <p key={i}>{p}</p>)}
-              </div>
-            </div>
-          </Section>
-          <Section>
-            <div className="rr-grid rr-grid-3">
-              <div className="photo alt-2" data-label="THE BAYS"        style={{ aspectRatio: "4 / 3" }}></div>
-              <div className="photo alt-3" data-label="ENGINE TEAR-DOWN" style={{ aspectRatio: "4 / 3" }}></div>
-              <div className="photo alt-1" data-label="DYNO TEST"       style={{ aspectRatio: "4 / 3" }}></div>
-            </div>
-          </Section>
-        </>
-      );
-    };
-
     const ContactPage = () => {
       const d = window.SITE_DATA;
       return (
@@ -732,7 +696,7 @@
       );
     };
 
-    Object.assign(window, { HomePage, WorkPage, ServicesPage, AboutPage, ContactPage });
+    Object.assign(window, { HomePage, WorkPage, ServicesPage, ContactPage });
   </script>
 
   <script type="text/babel">
@@ -750,7 +714,6 @@
       const view =
         page === "work"     ? <WorkPage /> :
         page === "services" ? <ServicesPage onNav={setPage} /> :
-        page === "about"    ? <AboutPage /> :
         page === "contact"  ? <ContactPage /> :
         <HomePage onNav={setPage} />;
 
