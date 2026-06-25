@@ -101,7 +101,6 @@
     .rr-grid-hero        { grid-template-columns: 1.15fr 1fr; align-items: center; gap: 56px; }
     .rr-grid-cta-dark    { grid-template-columns: 1.2fr 1fr;  align-items: center; gap: 56px; }
     .rr-grid-contact     { grid-template-columns: 1.2fr 1fr;  gap: 56px; }
-    .rr-grid-form        { grid-template-columns: 1fr 1fr;    gap: 20px; }
     .rr-grid-about       { grid-template-columns: 1fr 1fr;    align-items: center; gap: 56px; }
     .rr-grid-about-prose { grid-template-columns: 1fr 1fr;    gap: 56px; }
     .rr-grid-footer      { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
@@ -164,17 +163,6 @@
     .photo.alt-4 { background: linear-gradient(135deg, #0E0D0B 0%, #6F6A62 120%); }
     .photo.alt-5 { background: linear-gradient(135deg, #7A2D07 0%, #F0823F 100%); }
     .photo.alt-6 { background: linear-gradient(135deg, #16140F 0%, #28241E 60%, #0E0D0B 100%); }
-
-    .field { display: flex; flex-direction: column; gap: 8px; }
-    .field label { font-family: var(--rr-font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rr-fg-3); }
-    .field input, .field select, .field textarea {
-      font-family: var(--rr-font-body); font-size: 15px; padding: 12px 14px;
-      background: var(--rr-oil-950); border: 2px solid var(--rr-line-strong);
-      color: var(--rr-fg-1); border-radius: 0; outline: none;
-      transition: box-shadow var(--rr-dur) var(--rr-ease-out), border-color var(--rr-dur) var(--rr-ease-out);
-    }
-    .field input::placeholder, .field textarea::placeholder { color: var(--rr-chrome-500); }
-    .field input:focus, .field select:focus, .field textarea:focus { box-shadow: 4px 4px 0 var(--rr-mud-500); border-color: var(--rr-mud-400); }
 
     .rr-card { background: var(--rr-surface-card); border: 2px solid var(--rr-line-strong); box-shadow: 6px 6px 0 var(--rr-oil-950); }
     .rr-card.accent { box-shadow: 6px 6px 0 var(--rr-mud-500); border-color: var(--rr-mud-500); }
@@ -418,7 +406,7 @@
                   {d.heroSubtext || ""}
                 </p>
                 <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-                  <button className="btn btn-primary" onClick={onCta}>Book a service <Icon name="arrow-right" size={16}/></button>
+                  <button className="btn btn-primary" onClick={onCta}>Get in touch <Icon name="arrow-right" size={16}/></button>
                   <button className="btn btn-ghost" onClick={() => onCta("work")}>See the work</button>
                 </div>
               </div>
@@ -652,7 +640,7 @@
                 ))}
               </div>
               <div style={{ display: "flex", gap: 14, marginTop: 32, flexWrap: "wrap" }}>
-                <button className="btn btn-primary" onClick={() => onNav("contact")}>Book a service <Icon name="arrow-right" size={16}/></button>
+                <button className="btn btn-primary" onClick={() => onNav("contact")}>Get in touch <Icon name="arrow-right" size={16}/></button>
                 <button className="btn btn-ghost"   onClick={() => onNav("contact")}>Ask about your machine</button>
               </div>
             </Section>
@@ -694,57 +682,44 @@
     };
 
     const ContactPage = () => {
-      const [submitted, setSubmitted] = useStateP(false);
       const d = window.SITE_DATA;
-      const today = new Date().toISOString().split("T")[0];
-      const services = d.services.filter(s => s.name);
       return (
         <Section>
           <div className="rr-grid rr-grid-contact">
             <div>
-              <div className="eyebrow">Drop-Off Booking</div>
-              <h1 className="h-display h1" style={{ marginTop: 14 }}>Bring it<br/><span className="orange">to the shop.</span></h1>
-              <p style={{ fontSize: 18, color: "var(--rr-fg-2)", maxWidth: 480, marginTop: 16 }}>Fill this in. We'll call you back same day with a window.</p>
-              {!submitted ? (
-                <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="rr-grid rr-grid-form" style={{ marginTop: 32 }}>
-                  <div className="field"><label>Name</label><input placeholder="Your name" required/></div>
-                  <div className="field"><label>Phone</label><input type="tel" placeholder="(000) 000-0000" required/></div>
-                  <div className="field" style={{ gridColumn: "1 / -1" }}><label>Machine</label><input placeholder="Year · Make · Model"/></div>
-                  <div className="field"><label>Service</label>
-                    <select>
-                      {services.map(s => <option key={s.no}>{s.name}</option>)}
-                      <option>Not sure — diagnose it</option>
-                    </select>
-                  </div>
-                  <div className="field"><label>Drop-off date</label><input type="date" defaultValue={today}/></div>
-                  <div className="field" style={{ gridColumn: "1 / -1" }}><label>What's it doing?</label><textarea rows="4" placeholder="Tell us what's wrong, weird sounds, last service, etc."></textarea></div>
-                  <div style={{ gridColumn: "1 / -1", display: "flex", gap: 14, alignItems: "center", marginTop: 8, flexWrap: "wrap" }}>
-                    <button type="submit" className="btn btn-primary">Submit booking <Icon name="arrow-right" size={16}/></button>
-                    {d.responseTime && <span style={{ fontFamily: "var(--rr-font-mono)", fontSize: 11, letterSpacing: "0.08em", color: "var(--rr-fg-3)", textTransform: "uppercase" }}>{d.responseTime}</span>}
-                  </div>
-                </form>
-              ) : (
-                <div className="rr-card" style={{ marginTop: 32, padding: 24, borderColor: "var(--rr-trail-400)", boxShadow: "4px 4px 0 var(--rr-trail-500)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ width: 36, height: 36, background: "var(--rr-trail-500)", display: "grid", placeItems: "center" }}>
-                      <Icon name="check" size={18} stroke="white" />
+              <div className="eyebrow">Get in Touch</div>
+              <h1 className="h-display h1" style={{ marginTop: 14 }}>Reach out<br/><span className="orange">directly.</span></h1>
+              <p style={{ fontSize: 18, color: "var(--rr-fg-2)", maxWidth: 480, marginTop: 16 }}>Call or email to book a service, ask a question, or get a quote.</p>
+              <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 20 }}>
+                {d.contact.phone && (
+                  <a href={`tel:${d.contact.phone.replace(/\D/g,"")}`} style={{ display: "inline-flex", alignItems: "center", gap: 16, textDecoration: "none" }}>
+                    <div style={{ width: 52, height: 52, background: "var(--rr-grad-orange)", border: "2px solid var(--rr-oil-950)", display: "grid", placeItems: "center", flexShrink: 0 }}>
+                      <Icon name="phone" size={22} stroke="var(--rr-oil-900)" />
                     </div>
-                    <div className="h-display h3">Got it. We'll call.</div>
+                    <span className="h-display orange" style={{ fontSize: 38, lineHeight: 1 }}>{d.contact.phone}</span>
+                  </a>
+                )}
+                {d.contact.email && (
+                  <a href={`mailto:${d.contact.email}`} style={{ display: "inline-flex", alignItems: "center", gap: 16, textDecoration: "none" }}>
+                    <div style={{ width: 52, height: 52, border: "2px solid var(--rr-line-strong)", background: "var(--rr-oil-800)", display: "grid", placeItems: "center", flexShrink: 0, fontFamily: "var(--rr-font-mono)", fontSize: 18, color: "var(--rr-chrome-300)" }}>@</div>
+                    <span style={{ fontFamily: "var(--rr-font-mono)", fontSize: 15, color: "var(--rr-fg-2)", letterSpacing: "0.04em" }}>{d.contact.email}</span>
+                  </a>
+                )}
+                {(d.contact.address || d.contact.cityStateZip) && (
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginTop: 8 }}>
+                    <div style={{ width: 52, height: 52, border: "2px solid var(--rr-line-strong)", background: "var(--rr-oil-800)", display: "grid", placeItems: "center", flexShrink: 0 }}>
+                      <Icon name="pin" size={22} stroke="var(--rr-chrome-300)" />
+                    </div>
+                    <div style={{ paddingTop: 10, fontSize: 15, color: "var(--rr-fg-2)", lineHeight: 1.6 }}>
+                      {d.contact.address && <div>{d.contact.address}</div>}
+                      {d.contact.cityStateZip && <div>{d.contact.cityStateZip}</div>}
+                    </div>
                   </div>
-                  <p style={{ marginTop: 14, color: "var(--rr-fg-2)" }}>Booking received. We'll be in touch during shop hours.</p>
-                  <button className="btn btn-ghost btn-sm" style={{ marginTop: 16 }} onClick={() => setSubmitted(false)}>Send another</button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               <HoursPanel />
-              {(d.contact.phone || d.contact.email) && (
-                <div className="rr-card" style={{ padding: 24, boxShadow: "none" }}>
-                  <div className="eyebrow">Call / Email</div>
-                  {d.contact.phone && <div style={{ marginTop: 14, fontFamily: "var(--rr-font-display)", fontWeight: 800, fontStyle: "italic", fontSize: 26, letterSpacing: "0.03em" }} className="orange">{d.contact.phone}</div>}
-                  {d.contact.email && <div style={{ marginTop: 4, fontSize: 14, color: "var(--rr-fg-2)" }}>{d.contact.email}</div>}
-                </div>
-              )}
               <div style={{ border: "2px solid var(--rr-line-strong)", aspectRatio: "4 / 3", position: "relative", background: "repeating-linear-gradient(45deg, var(--rr-oil-800) 0 10px, var(--rr-oil-950) 10px 20px)", overflow: "hidden" }}>
                 <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -100%)" }}>
                   <Icon name="pin" size={48} stroke="var(--rr-mud-400)" strokeWidth={2.5}/>
