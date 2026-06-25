@@ -267,12 +267,12 @@
       { quote: "I picked up a 4 wheeler from Parker — he was very honest and knowledgeable about it. I've had him work on my grandson's 4 wheeler a few times (tires and oil changes to water in fuel) — always fair and quick service. Thanks for the great and honest service, looking forward to working with you in the future!", name: "Ken H.", bike: "" },
     ],
     work: [
-      { title: "2022 Can-Am Outlander",   meta: "", tags: [], label: "MOTOR SWAP",              alt: 1 },
-      { title: "1998 Honda TRX450S",      meta: "", tags: [], label: "REBUILD",                  alt: 5 },
-      { title: "2007 Yamaha Grizzly 400", meta: "", tags: [], label: "RECONDITIONING",           alt: 6 },
-      { title: "2004 Kawasaki KFX700",    meta: "", tags: [], label: "RESTORED FROM THE GRAVE",  alt: 3 },
-      { title: "2015 Kawasaki Teryx 800", meta: "", tags: [], label: "COMPLETE REBUILD",         alt: 2 },
-      { title: "2002 Kawasaki KLR650",    meta: "", tags: [], label: "BEFORE / AFTER",           alt: 4 },
+      { title: "2022 Can-Am Outlander",   meta: "", tags: [], label: "MOTOR SWAP",              alt: 1, image: "assets/work/can-am-outlander.jpg" },
+      { title: "1998 Honda TRX450S",      meta: "", tags: [], label: "REBUILD",                  alt: 5, image: "assets/work/honda-trx450s.jpg" },
+      { title: "2007 Yamaha Grizzly 400", meta: "", tags: [], label: "RECONDITIONING",           alt: 6, image: "assets/work/yamaha-grizzly-400.jpg" },
+      { title: "2004 Kawasaki KFX700",    meta: "", tags: [], label: "RESTORED FROM THE GRAVE",  alt: 3, image: "assets/work/kawasaki-kfx700.jpg" },
+      { title: "2015 Kawasaki Teryx 800", meta: "", tags: [], label: "COMPLETE REBUILD",         alt: 2, image: "assets/work/kawasaki-teryx-800.jpg" },
+      { title: "2002 Kawasaki KLR650",    meta: "", tags: [], label: "BEFORE / AFTER",           alt: 4, image: "assets/work/kawasaki-klr650.jpg" },
     ],
   };
   </script>
@@ -455,7 +455,10 @@
 
     const WorkCard = ({ work, accent = false }) => (
       <article className={`rr-card ${accent ? "accent" : ""}`} style={{ display: "flex", flexDirection: "column" }}>
-        <div className={`photo alt-${work.alt || 1}`} data-label={work.label || "PHOTO"} style={{ aspectRatio: "4 / 3", border: "none", borderBottom: "2px solid var(--rr-line-strong)" }}></div>
+        {work.image
+          ? <img src={work.image} alt={work.title} style={{ aspectRatio: "4 / 3", width: "100%", objectFit: "cover", display: "block", borderBottom: "2px solid var(--rr-line-strong)" }} />
+          : <div className={`photo alt-${work.alt || 1}`} data-label={work.label || "PHOTO"} style={{ aspectRatio: "4 / 3", border: "none", borderBottom: "2px solid var(--rr-line-strong)" }}></div>
+        }
         <div style={{ padding: "16px 18px" }}>
           <h3 className="h-display" style={{ fontSize: 24, lineHeight: 1 }}>{work.title || "—"}</h3>
           <div style={{ fontFamily: "var(--rr-font-mono)", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--rr-fg-3)", marginTop: 6 }}>{work.meta}</div>
