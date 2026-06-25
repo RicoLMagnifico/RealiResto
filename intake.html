@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Reali Resto — Client Intake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Archivo:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mud: #EA6411; --mud-d: #D1530C; --mud-700: #7A2D07;
+      --oil-950: #0E0D0B; --oil-900: #16140F; --oil-800: #1E1B16; --oil-700: #28241E; --oil-600: #3A352D;
+      --chrome-100: #ECECEA; --chrome-200: #D6D4CF; --chrome-300: #B8B4AC; --chrome-400: #97928A; --chrome-500: #6F6A62;
+      --trail-500: #2F4A2A; --trail-400: #4A6B41;
+      --caution: #F5C518;
+      --font-d: "Big Shoulders Display", Impact, sans-serif;
+      --font-b: "Archivo", Arial, sans-serif;
+      --font-m: "JetBrains Mono", monospace;
+      --grad-o: linear-gradient(180deg, #F7A24A 0%, #EA6411 52%, #A8400A 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--oil-900); color: var(--chrome-100); font-family: var(--font-b); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+    .page-header {
+      background: var(--oil-950); border-bottom: 3px solid var(--mud);
+      padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; gap: 20; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .page-header-title { font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 22px; text-transform: uppercase; display: flex; gap: 0.2em; }
+    .page-header-title .o { background: var(--grad-o); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header-sub { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.2em; color: var(--chrome-400); text-transform: uppercase; margin-top: 3px; }
+
+    .warn-strip { height: 10px; background: repeating-linear-gradient(-45deg, var(--mud-d) 0, var(--mud-d) 5px, var(--oil-950) 5px, var(--oil-950) 10px); }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 96px; }
+
+    .intro { background: var(--oil-800); border: 2px solid var(--oil-600); padding: 24px 28px; margin-bottom: 48px; }
+    .intro p { color: var(--chrome-300); font-size: 14px; line-height: 1.7; margin-top: 8px; }
+    .intro strong { color: var(--chrome-100); }
+
+    .form-section { margin-bottom: 48px; }
+    .section-header {
+      display: flex; align-items: center; gap: 16px;
+      border-bottom: 2px solid var(--oil-600); padding-bottom: 14px; margin-bottom: 28px;
+    }
+    .section-num { font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 40px; line-height: 1; background: var(--grad-o); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; min-width: 44px; }
+    .section-title { font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 22px; text-transform: uppercase; color: var(--chrome-100); }
+    .section-desc { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.16em; color: var(--chrome-400); text-transform: uppercase; margin-top: 3px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .span-2 { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-family: var(--font-b); font-weight: 700; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--chrome-400); }
+    .field input, .field select, .field textarea {
+      font-family: var(--font-b); font-size: 14px; padding: 10px 12px;
+      background: var(--oil-950); border: 2px solid var(--oil-600);
+      color: var(--chrome-100); border-radius: 0; outline: none;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--chrome-500); }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--mud); box-shadow: 3px 3px 0 var(--mud-d); }
+    .field .hint { font-family: var(--font-m); font-size: 10px; color: var(--chrome-500); letter-spacing: 0.06em; }
+
+    .hours-grid { display: grid; grid-template-columns: 80px 1fr; gap: 10px 16px; align-items: center; }
+    .day-label { font-family: var(--font-m); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--chrome-400); }
+
+    .service-row {
+      display: grid; grid-template-columns: 48px 1fr 160px 140px;
+      gap: 12px; align-items: start;
+      border-bottom: 1px solid var(--oil-700); padding: 16px 0;
+    }
+    .service-row:last-child { border-bottom: none; }
+    .service-num { font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 28px; background: var(--grad-o); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; padding-top: 8px; }
+    .service-main { display: flex; flex-direction: column; gap: 8px; }
+
+    .work-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: start; border-bottom: 1px solid var(--oil-700); padding: 16px 0; }
+    .work-row:last-child { border-bottom: none; }
+    .work-row-num { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.16em; color: var(--chrome-500); text-transform: uppercase; padding-top: 10px; }
+
+    .stat-row { display: grid; grid-template-columns: 140px 1fr 80px; gap: 12px; align-items: center; border-bottom: 1px solid var(--oil-700); padding: 14px 0; }
+    .stat-row:last-child { border-bottom: none; }
+
+    .accent-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .accent-toggle input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--mud); cursor: pointer; }
+    .accent-toggle span { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.1em; color: var(--chrome-400); text-transform: uppercase; }
+
+    .generate-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 18px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 18px 32px; border: 2px solid var(--oil-950); background: var(--grad-o);
+      color: var(--oil-900); cursor: pointer; box-shadow: 5px 5px 0 var(--oil-950);
+      transition: transform 150ms, box-shadow 150ms;
+    }
+    .generate-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--oil-950); }
+    .generate-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--oil-950); }
+
+    #output-section { display: none; margin-top: 48px; }
+    #output-section.visible { display: block; }
+
+    .output-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .output-title { font-family: var(--font-d); font-weight: 900; font-style: italic; font-size: 20px; text-transform: uppercase; }
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-m); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 10px 18px; border: 2px solid var(--chrome-500); background: transparent;
+      color: var(--chrome-100); cursor: pointer; transition: border-color 150ms, color 150ms;
+    }
+    .copy-btn:hover { border-color: var(--mud); color: var(--mud); }
+    .copy-btn.copied { border-color: var(--trail-400); color: var(--trail-400); }
+
+    .output-box {
+      background: var(--oil-950); border: 2px solid var(--oil-600);
+      padding: 24px; overflow-x: auto;
+      font-family: var(--font-m); font-size: 12px; line-height: 1.7;
+      color: var(--chrome-300); white-space: pre;
+    }
+
+    .instructions {
+      background: var(--oil-800); border: 2px solid var(--trail-400);
+      padding: 20px 24px; margin-top: 20px;
+    }
+    .instructions ol { padding-left: 20px; }
+    .instructions li { color: var(--chrome-300); font-size: 13px; line-height: 1.8; }
+    .instructions code { font-family: var(--font-m); font-size: 11px; background: var(--oil-950); padding: 2px 6px; color: var(--mud); }
+
+    .autosave-note { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.1em; color: var(--chrome-500); text-transform: uppercase; margin-top: 12px; }
+
+    @media (max-width: 700px) {
+      .page-header { padding: 16px 20px; }
+      .container { padding: 32px 16px 64px; }
+      .grid-2, .grid-3, .work-row { grid-template-columns: 1fr; }
+      .service-row { grid-template-columns: 48px 1fr; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="warn-strip"></div>
+  <div class="page-header">
+    <div>
+      <div class="page-header-title">
+        <span class="o">REALI</span><span>RESTO</span>
+      </div>
+      <div class="page-header-sub">Client Intake Form</div>
+    </div>
+    <button class="generate-btn" onclick="generate()">Generate Config →</button>
+  </div>
+
+  <div class="container">
+    <div class="intro">
+      <strong>Fill out every section below.</strong>
+      <p>When you're done, click <strong>Generate Config</strong> at the top. You'll get a block of code to send back — your developer will paste it into the website and everything will update automatically. Your answers are saved as you type.</p>
+    </div>
+
+    <form id="intake-form" oninput="autosave()">
+
+      <!-- 1. CONTACT -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <div>
+            <div class="section-title">Contact Info</div>
+            <div class="section-desc">Phone, email, address, social</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Phone Number</label>
+            <input id="phone" type="tel" placeholder="(207) 555-0100"/>
+            <span class="hint">Shown in header, footer, and contact page</span>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input id="email" type="email" placeholder="shop@realiresto.com"/>
+          </div>
+          <div class="field">
+            <label>Street Address</label>
+            <input id="address" placeholder="123 Workshop Rd"/>
+          </div>
+          <div class="field">
+            <label>City, State ZIP</label>
+            <input id="cityStateZip" placeholder="Portland, ME 04101"/>
+          </div>
+          <div class="field">
+            <label>Instagram URL</label>
+            <input id="instagram" placeholder="https://instagram.com/realiresto"/>
+            <span class="hint">Leave blank if none</span>
+          </div>
+          <div class="field">
+            <label>Facebook URL</label>
+            <input id="facebook" placeholder="https://facebook.com/realiresto"/>
+            <span class="hint">Leave blank if none</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. HOURS -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <div>
+            <div class="section-title">Shop Hours</div>
+            <div class="section-desc">Type hours or "Closed"</div>
+          </div>
+        </div>
+        <div class="hours-grid">
+          <div class="day-label">Monday</div>    <div class="field"><input id="hrs-mon" placeholder="8:00 AM – 6:00 PM"/></div>
+          <div class="day-label">Tuesday</div>   <div class="field"><input id="hrs-tue" placeholder="8:00 AM – 6:00 PM"/></div>
+          <div class="day-label">Wednesday</div> <div class="field"><input id="hrs-wed" placeholder="8:00 AM – 6:00 PM"/></div>
+          <div class="day-label">Thursday</div>  <div class="field"><input id="hrs-thu" placeholder="8:00 AM – 6:00 PM"/></div>
+          <div class="day-label">Friday</div>    <div class="field"><input id="hrs-fri" placeholder="8:00 AM – 5:00 PM"/></div>
+          <div class="day-label">Saturday</div>  <div class="field"><input id="hrs-sat" placeholder="9:00 AM – 2:00 PM"/></div>
+          <div class="day-label">Sunday</div>    <div class="field"><input id="hrs-sun" placeholder="Closed"/></div>
+        </div>
+      </div>
+
+      <!-- 3. COPY -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">03</div>
+          <div>
+            <div class="section-title">Shop Description</div>
+            <div class="section-desc">Hero tagline, about paragraphs, footer blurb</div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <div class="field">
+            <label>Hero Tagline (1–2 sentences shown under "Fix it. Ride it. Repeat.")</label>
+            <textarea id="heroSubtext" rows="2" placeholder="e.g. We rebuild dirt bikes and ATVs that other shops turn away — engines, suspension, full restorations."></textarea>
+          </div>
+          <div class="field">
+            <label>Footer One-Liner</label>
+            <input id="footerTagline" placeholder="e.g. Motorsport mechanics for dirt bikes, ATVs & side-by-sides."/>
+          </div>
+          <div class="field">
+            <label>About — Paragraph 1</label>
+            <textarea id="about1" rows="3" placeholder="How did the shop start?"></textarea>
+          </div>
+          <div class="field">
+            <label>About — Paragraph 2</label>
+            <textarea id="about2" rows="3" placeholder="What do you do today? What makes you different?"></textarea>
+          </div>
+          <div class="field">
+            <label>About — Paragraph 3 (optional)</label>
+            <textarea id="about3" rows="3" placeholder="Anything else — your philosophy, your promise to customers, etc."></textarea>
+          </div>
+          <div class="field">
+            <label>Booking Response Time (shown on the contact form)</label>
+            <input id="responseTime" placeholder="e.g. We respond within 4 hrs · Mon–Fri"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. STATS -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">04</div>
+          <div>
+            <div class="section-title">Stats</div>
+            <div class="section-desc">4 numbers shown in a band across the homepage</div>
+          </div>
+        </div>
+        <div id="stats-container">
+          <div class="stat-row">
+            <div class="field"><label>Number / Value</label><input class="stat-num" placeholder="e.g. 10 YR"/></div>
+            <div class="field"><label>Label</label><input class="stat-label" placeholder="e.g. wrenching on machines"/></div>
+            <div style="padding-top:24px;"><label class="accent-toggle"><input type="checkbox" class="stat-accent"/><span>Orange</span></label></div>
+          </div>
+          <div class="stat-row">
+            <div class="field"><label>Number / Value</label><input class="stat-num" placeholder="e.g. 480+"/></div>
+            <div class="field"><label>Label</label><input class="stat-label" placeholder="e.g. back on the dirt"/></div>
+            <div style="padding-top:24px;"><label class="accent-toggle"><input type="checkbox" class="stat-accent"/><span>Orange</span></label></div>
+          </div>
+          <div class="stat-row">
+            <div class="field"><label>Number / Value</label><input class="stat-num" placeholder="e.g. 2-WK"/></div>
+            <div class="field"><label>Label</label><input class="stat-label" placeholder="e.g. average turnaround"/></div>
+            <div style="padding-top:24px;"><label class="accent-toggle"><input type="checkbox" class="stat-accent" checked/><span>Orange</span></label></div>
+          </div>
+          <div class="stat-row">
+            <div class="field"><label>Number / Value</label><input class="stat-num" placeholder="e.g. 100%"/></div>
+            <div class="field"><label>Label</label><input class="stat-label" placeholder="e.g. no-upsell quotes"/></div>
+            <div style="padding-top:24px;"><label class="accent-toggle"><input type="checkbox" class="stat-accent"/><span>Orange</span></label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. SERVICES -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">05</div>
+          <div>
+            <div class="section-title">Services</div>
+            <div class="section-desc">Up to 6 services shown on the Services page</div>
+          </div>
+        </div>
+        <div id="services-container">
+          <!-- JS inserts rows -->
+        </div>
+      </div>
+
+      <!-- 6. TESTIMONIALS -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">06</div>
+          <div>
+            <div class="section-title">Testimonials</div>
+            <div class="section-desc">2 customer quotes shown on the homepage</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:24px;">
+          <div style="background:var(--oil-800);border:2px solid var(--oil-600);padding:20px;">
+            <div style="font-family:var(--font-m);font-size:10px;letter-spacing:0.16em;color:var(--chrome-400);text-transform:uppercase;margin-bottom:14px;">Testimonial 1</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="field"><label>Quote</label><textarea id="t1-quote" rows="2" placeholder="What did they say? Use their exact words."></textarea></div>
+              <div class="grid-2">
+                <div class="field"><label>Their Name</label><input id="t1-name" placeholder="e.g. Marc B."/></div>
+                <div class="field"><label>Bike / Machine</label><input id="t1-bike" placeholder="e.g. YZ250 · 2008"/></div>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--oil-800);border:2px solid var(--oil-600);padding:20px;">
+            <div style="font-family:var(--font-m);font-size:10px;letter-spacing:0.16em;color:var(--chrome-400);text-transform:uppercase;margin-bottom:14px;">Testimonial 2</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="field"><label>Quote</label><textarea id="t2-quote" rows="2" placeholder="What did they say?"></textarea></div>
+              <div class="grid-2">
+                <div class="field"><label>Their Name</label><input id="t2-name" placeholder="e.g. Karine T."/></div>
+                <div class="field"><label>Bike / Machine</label><input id="t2-bike" placeholder="e.g. Polaris Sportsman 850"/></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. WORK PORTFOLIO -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-num">07</div>
+          <div>
+            <div class="section-title">Recent Work</div>
+            <div class="section-desc">6 portfolio entries — photos added separately</div>
+          </div>
+        </div>
+        <div id="work-container">
+          <!-- JS inserts rows -->
+        </div>
+        <p style="font-family:var(--font-m);font-size:10px;letter-spacing:0.1em;color:var(--chrome-500);text-transform:uppercase;margin-top:16px;">Photo slots are placeholders until real images are provided.</p>
+      </div>
+
+    </form>
+
+    <!-- OUTPUT -->
+    <div id="output-section">
+      <div class="output-header">
+        <div class="output-title">Generated Config</div>
+        <button class="copy-btn" id="copy-btn" onclick="copyOutput()">Copy to clipboard</button>
+      </div>
+      <pre class="output-box" id="output-box"></pre>
+      <div class="instructions">
+        <strong style="font-family:var(--font-m);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--chrome-100);">How to use this</strong>
+        <ol style="margin-top:12px;">
+          <li>Open <code>index.html</code> in a text editor</li>
+          <li>Find the <code>&lt;script id="site-data"&gt;</code> block</li>
+          <li>Replace everything between the opening and closing script tags with the text above</li>
+          <li>Save the file and test in a browser</li>
+        </ol>
+      </div>
+    </div>
+
+    <p class="autosave-note">Answers auto-save in your browser as you type.</p>
+  </div>
+
+  <script>
+    const LABELS = ['BEFORE / AFTER', 'WORKSHOP', 'RESTORATION', 'DETAIL', 'TRAIL READY', 'BEFORE / AFTER'];
+    const ALTS   = [1, 5, 6, 3, 2, 4];
+
+    // Build services rows
+    const svcContainer = document.getElementById('services-container');
+    for (let i = 0; i < 6; i++) {
+      const no = String(i + 1).padStart(2, '0');
+      svcContainer.innerHTML += `
+        <div class="service-row">
+          <div class="service-num">${no}</div>
+          <div class="service-main">
+            <div class="field"><label>Service Name</label><input class="svc-name" placeholder="e.g. Top-End Rebuild"/></div>
+            <div class="field"><label>Short Description</label><input class="svc-desc" placeholder="e.g. Pistons, rings, head, gaskets. 2-stroke or 4-stroke."/></div>
+          </div>
+          <div class="field"><label>Starting Price</label><input class="svc-price" placeholder="e.g. from $480 + parts"/></div>
+          <div class="field"><label>Turnaround</label><input class="svc-time" placeholder="e.g. 5–7 days"/></div>
+        </div>`;
+    }
+
+    // Build work rows
+    const workContainer = document.getElementById('work-container');
+    for (let i = 0; i < 6; i++) {
+      workContainer.innerHTML += `
+        <div class="work-row">
+          <div>
+            <div class="field"><label>Job Title</label><input class="work-title" placeholder="e.g. YZ250F · '19"/></div>
+            <div class="field" style="margin-top:8px;"><label>Photo Label</label><input class="work-label" value="${LABELS[i]}"/></div>
+          </div>
+          <div class="field"><label>Meta (job + time)</label><input class="work-meta" placeholder="e.g. Top-end rebuild · 5 days"/></div>
+          <div class="field"><label>Tags (comma-separated)</label><input class="work-tags" placeholder="e.g. engine, 2-stroke"/></div>
+        </div>`;
+    }
+
+    // Autosave to localStorage
+    function autosave() {
+      const data = collectData();
+      try { localStorage.setItem('rr_intake', JSON.stringify(data)); } catch(e) {}
+    }
+
+    // Restore from localStorage
+    function restore() {
+      try {
+        const saved = localStorage.getItem('rr_intake');
+        if (!saved) return;
+        const d = JSON.parse(saved);
+        const set = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.value = val; };
+        set('phone', d.phone); set('email', d.email); set('address', d.address);
+        set('cityStateZip', d.cityStateZip); set('instagram', d.instagram); set('facebook', d.facebook);
+        set('hrs-mon', d.hMon); set('hrs-tue', d.hTue); set('hrs-wed', d.hWed); set('hrs-thu', d.hThu);
+        set('hrs-fri', d.hFri); set('hrs-sat', d.hSat); set('hrs-sun', d.hSun);
+        set('heroSubtext', d.heroSubtext); set('footerTagline', d.footerTagline);
+        set('about1', d.about1); set('about2', d.about2); set('about3', d.about3);
+        set('responseTime', d.responseTime);
+        set('t1-quote', d.t1q); set('t1-name', d.t1n); set('t1-bike', d.t1b);
+        set('t2-quote', d.t2q); set('t2-name', d.t2n); set('t2-bike', d.t2b);
+        if (d.stats) {
+          document.querySelectorAll('.stat-num').forEach((el, i)   => { if (d.stats[i]) el.value = d.stats[i].number; });
+          document.querySelectorAll('.stat-label').forEach((el, i) => { if (d.stats[i]) el.value = d.stats[i].label; });
+          document.querySelectorAll('.stat-accent').forEach((el, i) => { if (d.stats[i]) el.checked = d.stats[i].accent; });
+        }
+        if (d.services) {
+          document.querySelectorAll('.svc-name').forEach((el, i)  => { if (d.services[i]) el.value = d.services[i].name; });
+          document.querySelectorAll('.svc-desc').forEach((el, i)  => { if (d.services[i]) el.value = d.services[i].desc; });
+          document.querySelectorAll('.svc-price').forEach((el, i) => { if (d.services[i]) el.value = d.services[i].price; });
+          document.querySelectorAll('.svc-time').forEach((el, i)  => { if (d.services[i]) el.value = d.services[i].time; });
+        }
+        if (d.work) {
+          document.querySelectorAll('.work-title').forEach((el, i) => { if (d.work[i]) el.value = d.work[i].title; });
+          document.querySelectorAll('.work-meta').forEach((el, i)  => { if (d.work[i]) el.value = d.work[i].meta; });
+          document.querySelectorAll('.work-tags').forEach((el, i)  => { if (d.work[i]) el.value = d.work[i].tags; });
+          document.querySelectorAll('.work-label').forEach((el, i) => { if (d.work[i]) el.value = d.work[i].label; });
+        }
+      } catch(e) {}
+    }
+
+    function collectData() {
+      const v = id => (document.getElementById(id) || {}).value || '';
+      const stats = [];
+      const sNums   = document.querySelectorAll('.stat-num');
+      const sLabels = document.querySelectorAll('.stat-label');
+      const sAccent = document.querySelectorAll('.stat-accent');
+      sNums.forEach((el, i) => stats.push({ number: el.value, label: sLabels[i].value, accent: sAccent[i].checked }));
+
+      const services = [];
+      const svNames  = document.querySelectorAll('.svc-name');
+      const svDescs  = document.querySelectorAll('.svc-desc');
+      const svPrices = document.querySelectorAll('.svc-price');
+      const svTimes  = document.querySelectorAll('.svc-time');
+      svNames.forEach((el, i) => services.push({ name: el.value, desc: svDescs[i].value, price: svPrices[i].value, time: svTimes[i].value }));
+
+      const work = [];
+      const wTitles = document.querySelectorAll('.work-title');
+      const wMetas  = document.querySelectorAll('.work-meta');
+      const wTags   = document.querySelectorAll('.work-tags');
+      const wLabels = document.querySelectorAll('.work-label');
+      wTitles.forEach((el, i) => work.push({ title: el.value, meta: wMetas[i].value, tags: wTags[i].value, label: wLabels[i].value }));
+
+      return {
+        phone: v('phone'), email: v('email'), address: v('address'), cityStateZip: v('cityStateZip'),
+        instagram: v('instagram'), facebook: v('facebook'),
+        hMon: v('hrs-mon'), hTue: v('hrs-tue'), hWed: v('hrs-wed'), hThu: v('hrs-thu'),
+        hFri: v('hrs-fri'), hSat: v('hrs-sat'), hSun: v('hrs-sun'),
+        heroSubtext: v('heroSubtext'), footerTagline: v('footerTagline'),
+        about1: v('about1'), about2: v('about2'), about3: v('about3'),
+        responseTime: v('responseTime'),
+        t1q: v('t1-quote'), t1n: v('t1-name'), t1b: v('t1-bike'),
+        t2q: v('t2-quote'), t2n: v('t2-name'), t2b: v('t2-bike'),
+        stats, services, work
+      };
+    }
+
+    function q(str) { return JSON.stringify(str); }
+
+    function generate() {
+      const d = collectData();
+      const instagram = d.instagram || '#';
+      const facebook  = d.facebook  || '#';
+
+      const hoursLines = [
+        ['Mon', d.hMon], ['Tue', d.hTue], ['Wed', d.hWed], ['Thu', d.hThu],
+        ['Fri', d.hFri], ['Sat', d.hSat], ['Sun', d.hSun],
+      ].map(([day, h]) => `      { day: ${q(day)}, hours: ${q(h || '')} },`).join('\n');
+
+      const statsLines = d.stats.map(s =>
+        `      { number: ${q(s.number)}, label: ${q(s.label)}, accent: ${s.accent} },`
+      ).join('\n');
+
+      const svcLines = d.services.map((s, i) => {
+        const no = String(i + 1).padStart(2, '0');
+        return `      { no: ${q(no)}, name: ${q(s.name)}, description: ${q(s.desc)}, price: ${q(s.price)}, time: ${q(s.time)} },`;
+      }).join('\n');
+
+      const t1 = `      { quote: ${q(d.t1q)}, name: ${q(d.t1n)}, bike: ${q(d.t1b)} },`;
+      const t2 = `      { quote: ${q(d.t2q)}, name: ${q(d.t2n)}, bike: ${q(d.t2b)} },`;
+
+      const workLines = d.work.map((w, i) => {
+        const tags = w.tags ? w.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+        return `      { title: ${q(w.title)}, meta: ${q(w.meta)}, tags: ${JSON.stringify(tags)}, label: ${q(w.label || LABELS[i])}, alt: ${ALTS[i]} },`;
+      }).join('\n');
+
+      const about = [d.about1, d.about2, d.about3].map(p => q(p));
+
+      const output =
+`window.SITE_DATA = {
+  contact: {
+    phone:        ${q(d.phone)},
+    email:        ${q(d.email)},
+    address:      ${q(d.address)},
+    cityStateZip: ${q(d.cityStateZip)},
+    instagram:    ${q(instagram)},
+    facebook:     ${q(facebook)},
+  },
+  hours: [
+${hoursLines}
+  ],
+  heroSubtext:     ${q(d.heroSubtext)},
+  footerTagline:   ${q(d.footerTagline)},
+  aboutHeadline:   "A garage that grew up.",
+  aboutParagraphs: [${about.join(', ')}],
+  responseTime:    ${q(d.responseTime)},
+  stats: [
+${statsLines}
+  ],
+  services: [
+${svcLines}
+  ],
+  testimonials: [
+${t1}
+${t2}
+  ],
+  work: [
+${workLines}
+  ],
+};`;
+
+      document.getElementById('output-box').textContent = output;
+      const sec = document.getElementById('output-section');
+      sec.classList.add('visible');
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('output-box').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy to clipboard'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    restore();
+  </script>
+</body>
+</html>
